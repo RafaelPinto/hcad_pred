@@ -42,6 +42,11 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
+## Download data
+.PHONY: download_data
+download_data:
+	$(PYTHON_INTERPRETER) src/data/download_hcad_data.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################

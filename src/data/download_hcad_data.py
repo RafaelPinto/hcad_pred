@@ -3,7 +3,7 @@ from pathlib import Path
 from src.data.utils import DataDownloader
 
 
-dst_base = Path('data/external/2016')
+dst = Path('data/external/2016')
 
 url_base = 'https://pdata.hcad.org/data/cama/2016'
 
@@ -21,6 +21,24 @@ files = [
     'code_jur_list.txt',
 ]
 
-descr_url = 'https://pdata.hcad.org/Desc/Definition_help.pdf'
+for item in files:
+    url = url_base + '/' + item
 
+    data = DataDownloader(url, dst)
+
+    data.get_url()
+    data.write('data')
+
+# Get the metadata
+descr_url = 'https://pdata.hcad.org/Desc/Definition_help.pdf'
 lic = """Public Data. See https://pdata.hcad.org/index.html"""
+
+data = DataDownloader(
+    url,
+    dst,
+    descr_url=descr_url,
+    lic=lic
+)
+data.get_descr_url()
+data.write('description', 'README.pdf')
+data.write('license', 'LICENSE.txt')
