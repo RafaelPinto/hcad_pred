@@ -34,7 +34,6 @@ class DataDownloader():
                  lic=None):
         self.dst = dst
         self._payload = payload
-        self._zipped = False
 
         self.url = url
         self._res = None
@@ -53,10 +52,6 @@ class DataDownloader():
         dst = Path(new_dst)
         self._dst = dst
 
-    @property
-    def zipped(self):
-        return self._zipped
-
     def check_url(self, url, params=None):
         return requests.head(url, params=params)
 
@@ -69,9 +64,6 @@ class DataDownloader():
         res = self.check_url(new_url, params=self._payload)
         res.raise_for_status()
         self._url = new_url
-
-        if Path(new_url).suffix.lower() == '.zip':
-            self._zipped = True
 
     @property
     def res(self):
@@ -125,12 +117,20 @@ class DataDownloader():
             attempting to write the response"""
             raise TypeError(msg)
 
+        url_path = Path(self.url)
+        if dst_fname == '':
+            dst_fname = url_path.stem
+
+        zipped = False
+        if url_path.suffix.lower() == '.zip':
+            zipped = True
+
         if not self.dst.is_dir():
             self.dst.mkdir(parents=True)
 
-        if target == 'data' and self.zipped:
+        if target == 'data' and zipped:
             zipped = zipfile.ZipFile(io.BytesIO(res.content))
-            zipped.extractall(self.dst)
+            zipped.extractall(self.dst / dst_fname)
         elif target == 'license':
             with open(self.dst / dst_fname, 'w') as fd:
                 fd.write(res)
