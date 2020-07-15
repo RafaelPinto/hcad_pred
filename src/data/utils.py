@@ -30,12 +30,11 @@ class DataDownloader():
                  url,
                  dst,
                  payload=None,
-                 zipped=False,
                  descr_url=None,
                  lic=None):
         self.dst = dst
         self._payload = payload
-        self._zipped = zipped
+        self._zipped = False
 
         self.url = url
         self._res = None
@@ -70,6 +69,9 @@ class DataDownloader():
         res = self.check_url(new_url, params=self._payload)
         res.raise_for_status()
         self._url = new_url
+
+        if Path(new_url).suffix.lower() == '.zip':
+            self._zipped = True
 
     @property
     def res(self):
