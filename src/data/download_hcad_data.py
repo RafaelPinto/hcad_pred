@@ -11,7 +11,6 @@ files = [
     'Real_acct_owner.zip',
     'Real_building_land.zip',
     'Real_jur_exempt.zip',
-    'Real_jur_exempt.zip',
     'PP_files.zip',
     'Hearing_files.zip',
     'code_desc_real.txt',
