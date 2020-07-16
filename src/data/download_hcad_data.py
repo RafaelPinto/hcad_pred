@@ -42,3 +42,9 @@ data = DataDownloader(
 data.get_descr_url()
 data.write('description', 'README.pdf')
 data.write('license', 'LICENSE.txt')
+
+# Get table column names
+columns_url = 'https://pdata.hcad.org/Desc/Layout_and_Length.txt'
+data = DataDownloader(columns_url, dst, descr_url=columns_url)
+data.get_descr_url()
+data.write('description', 'Layout_and_Length.txt')
