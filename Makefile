@@ -16,10 +16,11 @@ create_environmnet: environment.yml
 	conda env create --name $(PROJECT_NAME) --file $<
 	@echo 'Activate the new environment with: conda activate' $(PROJECT_NAME)
 
-## Add ipykernel to jupyter nb
-.PHONY: environment_install_ipython_kernel
+## Add ipykernel and extensions to jupyter nb
+.PHONY: environment_config_nb
 environment_install_ipython_kernel:
 	ipython kernel install --name $(PROJECT_NAME) --display-name $(PROJECT_NAME) --sys-prefix
+	jupyter nbextensions_configurator enable --user
 
 ## Freeze conda environment
 environment_to_freeze.yml:
