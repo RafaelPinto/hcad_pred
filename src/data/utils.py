@@ -1,6 +1,7 @@
 from pathlib import Path
 import io
 import zipfile
+import pickle
 import requests
 
 import csv
@@ -204,3 +205,10 @@ class Table():
     def map_codes_to_column(self, colname, code):
         self.df[colname].replace(code, inplace=True)
         return self.df
+
+
+def save_pickle(obj, dst_fn):
+    if not dst_fn.parent.is_dir():
+        dst_fn.parent.mkdir(parents=True)
+    with open(dst_fn, 'wb') as f:
+        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
