@@ -3,6 +3,12 @@ import io
 import zipfile
 import requests
 
+import csv
+import numpy as np
+import pandas as pd
+
+from src.definitions import ROOT_DIR
+
 
 class DataDownloader():
     '''
@@ -138,3 +144,63 @@ class DataDownloader():
             with open(self.dst / dst_fname, 'wb') as fd:
                 for chunk in res.iter_content(chunk_size=128):
                     fd.write(chunk)
+
+
+class Table():
+    def __init__(self, table_fn, year):
+        self.table_fn = Path(table_fn)
+        self.year = year
+
+        self.table_name = self.table_fn.stem
+
+        self.df = None
+
+    def get_header(self):
+        headers_fn = Path(ROOT_DIR) / 'data/external' / self.year
+        headers_fn = headers_fn / 'Layout_and_Length.txt'
+
+        column_names = []
+        with open(headers_fn, 'r', encoding="ISO-8859-1") as fh:
+            for line in fh:
+                if line.startswith(self.table_name):
+                    _, column_name, _ = line.split()
+                    column_name = column_name.strip()
+                    column_names.append(column_name)
+        return column_names
+
+    def get_df(self):
+        names = self.get_header()
+
+        df = pd.read_csv(self.table_fn,
+                         sep='\t',
+                         names=names,
+                         encoding="ISO-8859-1",
+                         low_memory=False,
+                         quoting=csv.QUOTE_NONE,
+                         )
+        self.df = df
+        return self.df
+
+    def get_code(self, codes_fn, code_name, split_parts=1):
+        codes = {}
+        with open(codes_fn, 'r', encoding="ISO-8859-1") as fh:
+            for line in fh:
+                if line.startswith(code_name):
+                    break
+            next(fh)
+            next(fh)
+            next(fh)
+            for line in fh:
+                if line.strip() == '':
+                    break
+                if split_parts == 1:
+                    code, descr = line.split(' ', split_parts)
+                    codes[int(code)] = descr.strip()
+                else:
+                    code, second_code, descr = line.split(None, split_parts)
+                    codes[code] = descr.strip()
+        return codes
+
+    def map_codes_to_column(self, colname, code):
+        self.df[colname].replace(code, inplace=True)
+        return self.df
