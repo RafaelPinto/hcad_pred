@@ -163,7 +163,7 @@ class Table():
         column_names = []
         with open(headers_fn, 'r', encoding="ISO-8859-1") as fh:
             for line in fh:
-                if line.startswith(self.table_name):
+                if line.startswith(self.table_name + ' '):
                     _, column_name, _ = line.split()
                     column_name = column_name.strip()
                     column_names.append(column_name)
