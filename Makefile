@@ -48,6 +48,11 @@ clean:
 download_data:
 	$(PYTHON_INTERPRETER) src/data/download_hcad_data.py
 
+## Select data from downloaded files
+.PHONY: select_data
+select_data:
+	$(PYTHON_INTERPRETER) src/data/process_select_data.py
+
 #################################################################################
 # Self Documenting Commands                                                     #
 #################################################################################
