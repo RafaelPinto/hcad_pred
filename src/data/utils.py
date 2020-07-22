@@ -169,12 +169,34 @@ class Table():
                     column_names.append(column_name)
         return column_names
 
-    def get_df(self):
+    def get_skiprows(self):
+        one_bld_in_acct_fn = ROOT_DIR / 'data/raw/2016/one_bld_in_acct.pickle'
+        try:
+            with open(one_bld_in_acct_fn, 'rb') as f:
+                one_bld_in_acct = pickle.load(f)
+        except FileNotFoundError:
+            print(f"The file doesn't exists yet {one_bld_in_acct_fn}")
+            print("Try processing the building_res.txt file first")
+
+        accts_pd = pd.read_csv(self.table_fn,
+                               sep='\t',
+                               header=None,
+                               usecols=[0],  # The acct column in the file
+                               encoding="ISO-8859-1",
+                               quoting=csv.QUOTE_NONE,
+                               )
+        cond0 = ~accts_pd.isin(one_bld_in_acct)  # accts we want to skip
+        return accts_pd[cond0.values].index
+
+    def get_df(self, usecols=None, skiprows=None):
+
         names = self.get_header()
 
         df = pd.read_csv(self.table_fn,
                          sep='\t',
                          names=names,
+                         usecols=usecols,
+                         skiprows=skiprows,
                          encoding="ISO-8859-1",
                          low_memory=False,
                          quoting=csv.QUOTE_NONE,
