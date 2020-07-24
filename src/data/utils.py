@@ -326,3 +326,36 @@ def decode_isd(series):
     series.replace(decode, inplace=True)
 
     return series
+
+
+def decode_nhood(series):
+    key_fn = Path(ROOT_DIR) / 'data/external/2016' / 'code_nh_numbers'
+
+    codes = sorted(series.unique())
+
+    def get_line():
+        with open(key_fn, 'r', encoding="ISO-8859-1") as fh:
+            for line in fh:
+                yield line
+
+    decode = {}
+    for code in codes:
+        for line in get_line():
+            code_str = f'{code:.2f}'
+            if line.startswith(code_str + ' '):
+                try:
+                    _, _, description = line.split(maxsplit=2)
+                    description = description.strip()
+                except ValueError:
+                    print(f'No description for code: {code}')
+                    description = np.nan
+
+                decode[code] = description
+                break
+        else:
+            print(f'No description in file for code: {code}')
+            decode[code] = np.nan
+
+    series.replace(decode, inplace=True)
+
+    return series
