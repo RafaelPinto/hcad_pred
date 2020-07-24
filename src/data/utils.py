@@ -303,3 +303,26 @@ def fix_fixtures(df, fixture_col):
     print('\n')
 
     return df
+
+
+def decode_isd(series):
+    key_fn = Path(ROOT_DIR) / 'data/external/2016' / 'code_jur_list'
+
+    series = series.str.strip()
+    codes = sorted(series.unique())
+    if '' in codes:
+        codes.remove('')
+    codes = [code.zfill(3) for code in codes]
+
+    decode = {'': np.nan}
+    for code in codes:
+        with open(key_fn, 'r', encoding="ISO-8859-1") as fh:
+            for line in fh:
+                if line.startswith(code + ' '):
+                    _, description = line.split(maxsplit=1)
+                    description = description.strip()
+                    decode[code[1:]] = description  # last two digits
+
+    series.replace(decode, inplace=True)
+
+    return series
