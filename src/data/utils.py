@@ -234,3 +234,72 @@ def save_pickle(obj, dst_fn):
         dst_fn.parent.mkdir(parents=True)
     with open(dst_fn, 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
+
+
+def fix_area_column(df, area_col):
+    # Remove values less than 100 sqft
+    cond0 = df.loc[:, area_col] <= 100
+    cond0_sum = sum(cond0)
+    if cond0_sum > 10:
+        msg = f"There are {cond0_sum} values less than 100 sqft. \
+                Please fix them by hand."
+        return msg
+
+    print(f"Values less than 100 sqft: {cond0_sum}")
+    if cond0_sum > 0:
+        print(df[area_col].loc[cond0])
+
+    df = df.loc[~cond0, :].copy()
+
+    # Downcast type
+    df.loc[:, area_col] = pd.to_numeric(df.loc[:, area_col], downcast='unsigned')
+    print('\n')
+    print(f'The new data type is: {df[area_col].dtypes}')
+
+    # Grab NaNs
+    nan_idx = df[area_col].isnull()
+    nan_idx_sum = nan_idx.sum()
+    print('\n')
+    print(f'The number of null values is: {nan_idx_sum}')
+    print('\n')
+
+    print(f'{area_col} description:')
+    print(df[area_col].describe())
+
+    return df
+
+
+def fix_fixtures(df, fixture_col):
+    cond0 = df.loc[:, fixture_col] < 0
+    cond0_sum = sum(cond0)
+    if cond0_sum > 10:
+        msg = f"There are {cond0_sum} values less than 0. \
+                Please fix them by hand."
+        return msg
+
+    print(f"Values less than 0: {cond0_sum}")
+    if cond0_sum > 0:
+        print(df[fixture_col].loc[cond0])
+
+    # Downcast
+    df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col], downcast='float')
+
+    df_vc = df[fixture_col].value_counts(normalize=True)
+
+    print('\n')
+    print(f'The new data type is: {df[fixture_col].dtypes}')
+    print('Head:')
+    print(df[fixture_col].head())
+    print('\n')
+
+    print(f'{fixture_col} normalized value counts: First 20')
+    print(df_vc.head(20))
+
+    # Grab NaNs: There should not be NaNs
+    nan_idx = df[fixture_col].isnull()
+    nan_idx_sum = nan_idx.sum()
+    print('\n')
+    print(f'The number of null values is: {nan_idx_sum}')
+    print('\n')
+
+    return df
