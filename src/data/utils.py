@@ -237,19 +237,17 @@ def save_pickle(obj, dst_fn):
 
 
 def fix_area_column(df, area_col):
-    # Remove values less than 100 sqft
+    # Replace values less than 100 sqft with NaNs
     cond0 = df.loc[:, area_col] <= 100
     cond0_sum = sum(cond0)
-    if cond0_sum > 10:
-        msg = f"There are {cond0_sum} values less than 100 sqft. \
-                Please fix them by hand."
-        return msg
 
     print(f"Values less than 100 sqft: {cond0_sum}")
     if cond0_sum > 0:
         print(df[area_col].loc[cond0])
 
-    df = df.loc[~cond0, :].copy()
+        bad_area_vc = df.loc[cond0, :][area_col].value_counts()
+        replace = {num: np.nan for num in bad_area_vc.index}
+        df[area_col].replace(replace, inplace=True)
 
     # Downcast type
     df.loc[:, area_col] = pd.to_numeric(df.loc[:, area_col], downcast='unsigned')
