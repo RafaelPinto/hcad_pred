@@ -2,6 +2,7 @@ from pathlib import Path
 import io
 import zipfile
 import pickle
+import re
 import requests
 
 import csv
@@ -357,3 +358,14 @@ def decode_nhood(series):
     series.replace(decode, inplace=True)
 
     return series
+
+
+def fix_column_names(df):
+    # Lower case
+    df.columns = [colname.lower() for colname in df.columns]
+
+    # Words only
+    df.columns = ['_'.join(re.findall(r'\w+', colname))
+                  for colname in df.columns]
+
+    return df
