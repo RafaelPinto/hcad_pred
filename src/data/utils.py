@@ -271,14 +271,13 @@ def fix_area_column(df, area_col):
 def fix_fixtures(df, fixture_col):
     cond0 = df.loc[:, fixture_col] < 0
     cond0_sum = sum(cond0)
-    if cond0_sum > 10:
-        msg = f"There are {cond0_sum} values less than 0. \
-                Please fix them by hand."
-        return msg
 
     print(f"Values less than 0: {cond0_sum}")
     if cond0_sum > 0:
         print(df[fixture_col].loc[cond0])
+        bad_fixtures_vc = df.loc[cond0, :][fixture_col].value_counts()
+        replace = {num: np.nan for num in bad_fixtures_vc.index}
+        df[fixture_col].replace(replace, inplace=True)
 
     # Downcast
     df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col], downcast='float')
@@ -294,7 +293,7 @@ def fix_fixtures(df, fixture_col):
     print(f'{fixture_col} normalized value counts: First 20')
     print(df_vc.head(20))
 
-    # Grab NaNs: There should not be NaNs
+    # Grab NaNs
     nan_idx = df[fixture_col].isnull()
     nan_idx_sum = nan_idx.sum()
     print('\n')
