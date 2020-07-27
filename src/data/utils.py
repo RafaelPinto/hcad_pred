@@ -250,9 +250,7 @@ def fix_area_column(df, area_col):
     if cond0_sum > 0:
         print(df[area_col].loc[cond0])
 
-        bad_area_vc = df.loc[cond0, area_col].value_counts()
-        replace = {num: np.nan for num in bad_area_vc.index}
-        df[area_col].replace(replace, inplace=True)
+        df[area_col] = df[area_col].apply(lambda x: np.nan if x < 100 else x)
 
         # https://pandas.pydata.org/pandas-docs/stable/user_guide/gotchas.html#nan-integer-na-values-and-na-type-promotions
         print("Since the column contains NaNs, it can't be casted as int type")
@@ -280,9 +278,8 @@ def fix_fixtures(df, fixture_col):
     print(f"Values less than 0: {cond0_sum}")
     if cond0_sum > 0:
         print(df[fixture_col].loc[cond0])
-        bad_fixtures_vc = df.loc[cond0, :][fixture_col].value_counts()
-        replace = {num: np.nan for num in bad_fixtures_vc.index}
-        df[fixture_col].replace(replace, inplace=True)
+        df[fixture_col] = df[fixture_col].apply(lambda x:
+                                                np.nan if x < 0 else x)
 
     # Downcast
     df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col],
