@@ -371,3 +371,17 @@ def fix_column_names(df):
                   for colname in df.columns]
 
     return df
+
+
+def fix_appraised_values(df, value_col):
+    print(f'{value_col}: head')
+    print(df[value_col].head())
+
+    print('\n')
+    print(f"The number of missing values is: {sum(df[value_col].isnull())}")
+
+    print('\n')
+    print(f'{value_col}: describe')
+    print(df[value_col].describe().apply(lambda x: format(x, 'f')))
+
+    return df
