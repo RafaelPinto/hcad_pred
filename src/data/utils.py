@@ -271,7 +271,7 @@ def fix_area_column(df, area_col):
     return df
 
 
-def fix_fixtures(df, fixture_col):
+def fix_fixtures(df, fixture_col, downcast='float'):
     cond0 = df.loc[:, fixture_col] < 0
     cond0_sum = sum(cond0)
 
@@ -283,7 +283,7 @@ def fix_fixtures(df, fixture_col):
 
     # Downcast
     df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col],
-                                           downcast='float')
+                                           downcast=downcast)
 
     df_vc = df[fixture_col].value_counts(normalize=True)
 
