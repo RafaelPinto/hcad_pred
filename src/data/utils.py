@@ -238,6 +238,10 @@ def save_pickle(obj, dst_fn):
 
 
 def fix_area_column(df, area_col):
+    # Downcast type
+    df[area_col] = pd.to_numeric(df.loc[:, area_col],
+                                 downcast='unsigned')
+
     # Replace values less than 100 sqft with NaNs
     cond0 = df.loc[:, area_col] <= 100
     cond0_sum = sum(cond0)
@@ -246,12 +250,13 @@ def fix_area_column(df, area_col):
     if cond0_sum > 0:
         print(df[area_col].loc[cond0])
 
-        bad_area_vc = df.loc[cond0, :][area_col].value_counts()
+        bad_area_vc = df.loc[cond0, area_col].value_counts()
         replace = {num: np.nan for num in bad_area_vc.index}
         df[area_col].replace(replace, inplace=True)
 
-    # Downcast type
-    df.loc[:, area_col] = pd.to_numeric(df.loc[:, area_col], downcast='unsigned')
+        # https://pandas.pydata.org/pandas-docs/stable/user_guide/gotchas.html#nan-integer-na-values-and-na-type-promotions
+        print("Since the column contains NaNs, it can't be casted as int type")
+
     print('\n')
     print(f'The new data type is: {df[area_col].dtypes}')
 
@@ -280,7 +285,8 @@ def fix_fixtures(df, fixture_col):
         df[fixture_col].replace(replace, inplace=True)
 
     # Downcast
-    df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col], downcast='float')
+    df.loc[:, fixture_col] = pd.to_numeric(df.loc[:, fixture_col],
+                                           downcast='float')
 
     df_vc = df[fixture_col].value_counts(normalize=True)
 
