@@ -271,7 +271,7 @@ def fix_area_column(df, area_col):
     return df
 
 
-def fix_fixtures(df, fixture_col, downcast='float'):
+def fix_fixtures(df, fixture_col, downcast='float', describe=False):
     cond0 = df.loc[:, fixture_col] < 0
     cond0_sum = sum(cond0)
 
@@ -302,6 +302,11 @@ def fix_fixtures(df, fixture_col, downcast='float'):
     print('\n')
     print(f'The number of null values is: {nan_idx_sum}')
     print('\n')
+
+    # describe
+    if describe:
+        print(f'Description:')
+        print(df[fixture_col].describe().apply(lambda x: format(x, 'f')))
 
     return df
 
@@ -383,5 +388,17 @@ def fix_appraised_values(df, value_col):
     print('\n')
     print(f'{value_col}: describe')
     print(df[value_col].describe().apply(lambda x: format(x, 'f')))
+
+    return df
+
+
+def fix_category_col(df, colname, order=False):
+    df[colname] = df[colname].astype('category')
+    if order:
+        df[colname] = df[colname].cat.reorder_categories(order, ordered=True)
+
+    print(f"The new column type is: {repr(df[colname].dtypes)}")
+    print('\n')
+    print(f"The number of missing values is: {sum(df[colname].isnull())}")
 
     return df
