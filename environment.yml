@@ -1,4 +1,4 @@
-name: wind_pred
+name: hcad_pred
 channels:
   - conda-forge
   - defaults
