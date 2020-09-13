@@ -6,6 +6,7 @@ dependencies:
   - python=3.7
   - setuptools
   - wheel
+  - invoke
   - notebook
   - jupyter_contrib_nbextensions
   - requests
