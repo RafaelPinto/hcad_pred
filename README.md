@@ -9,7 +9,7 @@ Concerning file organization, I'm mostly following the [Cookiecutter Data Scienc
 Additionally, I repurposed the data folders to follow this flow:
 1. External: The original, immutable data dump. All available data is here (or linked here) first.
 2. Raw: The external data after the cleaning step.
-3. Interim: Intermediate data that has been transformed (normalized, scaled, etc.).
+3. Interim: Raw data that has been transformed (normalized, scaled, etc.).
 4. Processed: The final, canonical data sets for modeling.
 
 # Downloading the data
