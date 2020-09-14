@@ -1,5 +1,7 @@
-from os import environ
+import os
 from sys import platform
+
+from dotenv import load_dotenv, find_dotenv
 
 from invoke import task
 
@@ -7,14 +9,15 @@ from invoke import task
 # Set
 ENV_NAME = 'hcad_pred'
 
-# Set the runing shell to PowerShell
+# Get the SHELL from the environment variable
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+SHELL = os.environ.get("SHELL")
+
 # https://github.com/pyinvoke/invoke/pull/407
-if False:
-    SHELL = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
-else:
-    # default was cmd.exe
+if not SHELL:
     if platform == 'win32':
-        SHELL = environ['COMSPEC']
+        SHELL = os.environ['COMSPEC']  # default win shell is cmd.exe
     else:
         SHELL = '/bin/bash'
 
@@ -22,8 +25,8 @@ else:
 # Environment
 
 # Run this first
-# conda env create --name my_env_name --file .\environment.yml
-# conda activate
+# conda env create --name hcad_pred --file .\environment.yml
+# conda activate hcad_pred
 
 
 @task
