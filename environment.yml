@@ -12,9 +12,11 @@ dependencies:
   - requests
   - numpy
   - matplotlib
+  - seaborn
   - papermill
   - pandas
   - pip
   - pip:
     - -e .
     - python-dotenv>=0.5.1
+    - sweetviz
