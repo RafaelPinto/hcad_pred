@@ -56,9 +56,9 @@ def plot_counts(series, xlabel, title=None, figsize=(8, 8)):
     return
 
 
-def plot_hist(series, xlabel, title=None, figsize=(8, 8)):
+def plot_hist(series, xlabel, title=None, figsize=(8, 8), bins=5):
     fig, ax = plt.subplots(figsize=(8, 8))
-    series.hist(histtype='step', linewidth=2)
+    series.hist(histtype='step', linewidth=2, bins=bins)
     plt.xlabel(xlabel)
     plt.ylabel('Count')
 
