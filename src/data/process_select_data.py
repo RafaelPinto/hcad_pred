@@ -68,8 +68,8 @@ pm.execute_notebook(in_file,
                     )
 
 
-in_file = str(root / '2.0-rp-hcad-eda.ipynb')
-out_file = '2.0-rp-hcad-eda_' + today + '.ipynb'
+in_file = str(root / '2.2-rp-hcad-eda-appraised-value-perc-diff-subdiv-comps-hypothesis-test.ipynb')
+out_file = '2.2-rp-hcad-eda-appraised-value-perc-diff-subdiv-comps-hypothesis-test_' + today + '.ipynb'
 out_file = str(out_dir / out_file)
 pm.execute_notebook(in_file,
                     out_file,
