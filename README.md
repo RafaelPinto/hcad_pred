@@ -31,12 +31,12 @@ where hcad_pred is the name of the newly created environment. Then, you must act
 
 `conda activate hcad_pred`
 
-With the environment activated, you will be able to run the `invoke` commands present in the [task.py file](tasks.py). I recommend running `invoke env-set-jupyter` first. The other `env_` tasks are for when you install new packages. The suggested steps after intalling a new package are:
+With the environment activated, you will be able to run the `invoke` commands present in the [task.py file](tasks.py). I recommend running `invoke env-set-jupyter` first. The other `env_` tasks are for when you install new packages. The suggested steps for intalling or removing packages are:
 
 1. Add your package to the [environment.yml file](environment.yml). 
 2. `invoke env-update`: Updates the `hcad_pred` environment with the packages in the environment.yml file.
 3. `invoke env-freeze`: Updates the environment_to_freeze.yml file. This file contains all of the environment dependencies.
-4. [Optional] `invoke env-remove`: If you new to start from scratch. This will remove the `hcad_env`.
+4. [Optional] `invoke env-remove`: If you need to start from scratch. This will remove the `hcad_env`.
 
 # Downloading the data
 `invoke download-data`
