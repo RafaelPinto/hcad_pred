@@ -25,7 +25,7 @@ Additionally, I repurposed the data folders to follow this flow:
 # Environmnet
 I'm using conda for managing packages and environments. Once you have [cloned this repo](https://github.com/RafaelPinto/hcad_pred.git) you'll need to create a conda environment with:
 
-`conda create --name hcad_pred python=3.7 invoke`
+`conda create --name hcad_pred -c conda-forge python=3.7 invoke python-dotenv`
 
 where hcad_pred is the name of the newly created environment. Then, you must activate it with:
 
