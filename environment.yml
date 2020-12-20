@@ -15,8 +15,8 @@ dependencies:
   - seaborn
   - papermill
   - pandas
+  - python-dotenv>=0.5.1
   - pip
   - pip:
     - -e .
-    - python-dotenv>=0.5.1
     - sweetviz

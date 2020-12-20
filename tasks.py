@@ -25,7 +25,7 @@ if not SHELL:
 # Environment
 
 # Run this first
-# conda create --name hcad_pred python=3.7 invoke
+# conda create --name hcad_pred -c conda-forge python=3.7 invoke python-dotenv
 # conda activate hcad_pred
 
 
