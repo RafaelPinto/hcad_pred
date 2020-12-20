@@ -25,7 +25,7 @@ if not SHELL:
 # Environment
 
 # Run this first
-# conda env create --name hcad_pred --file .\environment.yml
+# conda create --name hcad_pred python=3.7 invoke
 # conda activate hcad_pred
 
 

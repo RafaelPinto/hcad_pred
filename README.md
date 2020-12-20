@@ -25,13 +25,13 @@ Additionally, I repurposed the data folders to follow this flow:
 # Environmnet
 I'm using conda for managing packages and environments. Once you have [cloned this repo](https://github.com/RafaelPinto/hcad_pred.git) you'll need to create a conda environment with:
 
-`conda env create --name hcad_pred --file .\environment.yml`
+`conda create --name hcad_pred python=3.7 invoke`
 
 where hcad_pred is the name of the newly created environment. Then, you must activate it with:
 
 `conda activate hcad_pred`
 
-With the environment activated, you will be able to run the `invoke` commands present in the [task.py file](tasks.py). I recommend running `invoke env-set-jupyter` first. The other `env_` tasks are for when you install new packages. The suggested steps for intalling or removing packages are:
+With the environment activated, you will be able to run the `invoke` commands present in the [task.py file](tasks.py). First, run `invoke env-update` to install the rest of the dependencies. Next, I recommend running `invoke env-set-jupyter` to enable jupyter notebook extensions. The other `env_` tasks are for when you install new packages. The suggested steps for intalling or removing packages are:
 
 1. Add your package to the [environment.yml file](environment.yml). 
 2. `invoke env-update`: Updates the `hcad_pred` environment with the packages in the environment.yml file.
